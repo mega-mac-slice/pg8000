@@ -185,17 +185,9 @@ XML types.
 | int4
 |
 
-| long
-| numeric
-| Python 2 only.
-
 | str
-| text (Python 3), bytea (Python 2)
-|
-
-| unicode
 | text
-| Python 2 only.
+|
 
 | float
 | float8
@@ -205,13 +197,9 @@ XML types.
 | numeric
 |
 
-| pg8000.Bytea
-| bytea
-| Python 2 only.
-
 | bytes
 | bytea
-| Python 3 only.
+|
 
 | datetime.datetime (without tzinfo)
 | timestamp without timezone
@@ -244,19 +232,19 @@ XML types.
 
 | ipaddress.IPv4Address
 | inet
-| Python 3.3 onwards
+|
 
 | ipaddress.IPv6Address
 | inet
-| Python 3.3 onwards
+|
 
 | ipaddress.IPv4Network
 | inet
-| Python 3.3 onwards
+|
 
 | ipaddress.IPv6Network
 | inet
-| Python 3.3 onwards
+|
 
 | int
 | xid
@@ -277,10 +265,6 @@ XML types.
 | list of str
 | TEXT[]
 |
-
-| list of unicode
-| TEXT[]
-| Python 2 only.
 
 | int
 | int2vector
@@ -579,7 +563,7 @@ Construct an object holding binary data.
 This function is part of the
 http://www.python.org/dev/peps/pep-0249/[DBAPI 2.0 specification].
 
-Returns: `pg8000.types.Bytea` for Python 2, otherwise `bytes`.
+Returns: `bytes`.
 
 
 === Generic Exceptions
@@ -1004,12 +988,6 @@ is not implemented by pg8000.
 This method is part of the
 http://www.python.org/dev/peps/pep-0249/[DBAPI 2.0 specification], however, it
 is not implemented by pg8000.
-
-
-==== pg8000.Bytea
-
-Bytea is a str-derived class that is mapped to a PostgreSQL byte array. This
-class is only used in Python 2, the built-in `bytes` type is used in Python 3.
 
 
 ==== pg8000.Interval

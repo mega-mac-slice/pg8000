@@ -70,6 +70,8 @@ class UTC(tzinfo):
 
 utc = UTC()
 
+BINARY = bytes
+
 
 class Interval(object):
     """An Interval represents a measurement of time.  In PostgreSQL, an
