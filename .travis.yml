@@ -71,11 +71,11 @@ before_install:
   - sudo systemctl start postgresql@${DB}-main
   - psql -U postgres -tc 'create extension hstore;'
   - psql -U postgres -tc 'show server_version;'
-  - psql -U postgres -tc "alter user postgres with password 'pw';"
   - psql -U postgres -tc "alter system set client_min_messages = notice;"
   - if [ ${DB} == "10" ]; then
       psql -U postgres -tc "alter system set password_encryption = 'scram-sha-256';";
     fi
+  - psql -U postgres -tc "alter user postgres with password 'pw';"
   - sudo systemctl reload postgresql@${DB}-main
   - psql -U postgres -tc 'show client_min_messages;'
   - cd $TRAVIS_BUILD_DIR
