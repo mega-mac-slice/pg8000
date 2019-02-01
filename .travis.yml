@@ -94,6 +94,12 @@ before_install:
 install:
   - pip install nose
   - pip install pytz
+  - pip install flake8
+  - pip install pytest
 
 script:
-  - nosetests
+  - nosetests -x --ignore-files=test_scram.py
+  - pytest tests/test_scram.py
+  - python -m doctest README.adoc
+  - flake8 --exclude venv,.tox,build,versioneer.py
+  - python setup.py check
