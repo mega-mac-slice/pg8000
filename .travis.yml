@@ -80,6 +80,7 @@ before_install:
   - sudo echo "host pg8000_md5 all 127.0.0.1/32 md5" > pg_hba.conf
   - sudo echo "host pg8000_gss all 127.0.0.1/32 gss" >> pg_hba.conf
   - sudo echo "host pg8000_password all 127.0.0.1/32 password" >> pg_hba.conf
+  - sudo echo "host pg8000_scram_sha_256 all 127.0.0.1/32 scram-sha-256" >> pg_hba.conf
   - cat old_pg_hba.conf >> pg_hba.conf
   - sudo systemctl start postgresql@${DB}-main
   - psql -U postgres -tc 'create extension hstore;'

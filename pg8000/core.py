@@ -20,6 +20,7 @@ from time import localtime
 import pg8000
 from json import loads, dumps
 from os import getpid
+from pg8000.pg_scram import Auth
 
 
 # Copyright (c) 2007-2009, Mathieu Fenniak
@@ -1711,6 +1712,37 @@ class Connection(object):
             # String - The password.  Password may be encrypted.
             self._send_message(PASSWORD, pwd + NULL_BYTE)
             self._flush()
+
+        elif auth_code == 10:
+            # AuthenticationSASL
+            mechanisms = [
+                m.decode('ascii') for m in data[4:-1].split(NULL_BYTE)]
+
+            self.auth = Auth(
+                mechanisms, self.user.decode('utf8'),
+                self.password.decode('utf8'))
+
+            init = self.auth.get_client_first_message().encode('utf8')
+
+            # SASLInitialResponse
+            self._write(
+                create_message(
+                    PASSWORD,
+                    b('SCRAM-SHA-256') + NULL_BYTE + i_pack(len(init)) + init))
+            self._flush()
+
+        elif auth_code == 11:
+            # AuthenticationSASLContinue
+            self.auth.set_server_first_message(data[4:].decode('utf8'))
+
+            # SASLResponse
+            msg = self.auth.get_client_final_message().encode('utf8')
+            self._write(create_message(PASSWORD, msg))
+            self._flush()
+
+        elif auth_code == 12:
+            # AuthenticationSASLFinal
+            self.auth.set_server_final_message(data[4:].decode('utf8'))
 
         elif auth_code in (2, 4, 6, 7, 8, 9):
             raise InterfaceError(

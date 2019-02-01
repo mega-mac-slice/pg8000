@@ -33,6 +33,7 @@ setup(
     license="BSD",
     install_requires=[
         "six>=1.10.0",
+        "passlib==1.7.1"
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
