@@ -2,7 +2,7 @@ from pg8000.core import (
     Warning, DataError, DatabaseError, InterfaceError, ProgrammingError,
     Error, OperationalError, IntegrityError, InternalError, NotSupportedError,
     ArrayContentNotHomogenousError, ArrayDimensionsNotConsistentError,
-    ArrayContentNotSupportedError, utc, Connection, Cursor, Binary, Date,
+    ArrayContentNotSupportedError, Connection, Cursor, Binary, Date,
     DateFromTicks, Time, TimeFromTicks, Timestamp, TimestampFromTicks, BINARY,
     Interval, PGEnum, PGJson, PGJsonb, PGTsvector, PGText, PGVarchar)
 from ._version import get_versions
@@ -93,7 +93,7 @@ __all__ = [
     Warning, DataError, DatabaseError, connect, InterfaceError,
     ProgrammingError, Error, OperationalError, IntegrityError, InternalError,
     NotSupportedError, ArrayContentNotHomogenousError,
-    ArrayDimensionsNotConsistentError, ArrayContentNotSupportedError, utc,
+    ArrayDimensionsNotConsistentError, ArrayContentNotSupportedError,
     Connection, Cursor, Binary, Date, DateFromTicks, Time, TimeFromTicks,
     Timestamp, TimestampFromTicks, BINARY, Interval, PGEnum, PGJson, PGJsonb,
     PGTsvector, PGText, PGVarchar]

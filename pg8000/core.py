@@ -1,5 +1,5 @@
 from datetime import (
-    timedelta as Timedelta, datetime as Datetime, tzinfo, date, time)
+    timedelta as Timedelta, datetime as Datetime, date, time)
 from warnings import warn
 import socket
 from struct import pack
@@ -20,6 +20,7 @@ from pg8000.pg_scram import Auth
 import enum
 from ipaddress import (
     ip_address, IPv4Address, IPv6Address, ip_network, IPv4Network, IPv6Network)
+from datetime import timezone as Timezone
 
 
 # Copyright (c) 2007-2009, Mathieu Fenniak
@@ -54,26 +55,10 @@ __author__ = "Mathieu Fenniak"
 
 
 ZERO = Timedelta(0)
-
-
-class UTC(tzinfo):
-
-    def utcoffset(self, dt):
-        return ZERO
-
-    def tzname(self, dt):
-        return "UTC"
-
-    def dst(self, dt):
-        return ZERO
-
-
-utc = UTC()
-
 BINARY = bytes
 
 
-class Interval(object):
+class Interval():
     """An Interval represents a measurement of time.  In PostgreSQL, an
     interval is defined in the measure of months, days, and microseconds; as
     such, the pg8000 interval type represents the same information.
@@ -157,7 +142,7 @@ class Interval(object):
         return not self.__eq__(other)
 
 
-class PGType(object):
+class PGType():
     def __init__(self, value):
         self.value = value
 
@@ -573,7 +558,7 @@ def convert_paramstyle(style, query):
 
 
 EPOCH = Datetime(2000, 1, 1)
-EPOCH_TZ = EPOCH.replace(tzinfo=utc)
+EPOCH_TZ = EPOCH.replace(tzinfo=Timezone.utc)
 EPOCH_SECONDS = timegm(EPOCH.timetuple())
 INFINITY_MICROSECONDS = 2 ** 63 - 1
 MINUS_INFINITY_MICROSECONDS = -1 * INFINITY_MICROSECONDS - 1
@@ -612,13 +597,15 @@ def timestamp_send_float(v):
 def timestamptz_send_integer(v):
     # timestamps should be sent as UTC.  If they have zone info,
     # convert them.
-    return timestamp_send_integer(v.astimezone(utc).replace(tzinfo=None))
+    return timestamp_send_integer(
+        v.astimezone(Timezone.utc).replace(tzinfo=None))
 
 
 def timestamptz_send_float(v):
     # timestamps should be sent as UTC.  If they have zone info,
     # convert them.
-    return timestamp_send_float(v.astimezone(utc).replace(tzinfo=None))
+    return timestamp_send_float(
+        v.astimezone(Timezone.utc).replace(tzinfo=None))
 
 
 # return a timezone-aware datetime instance if we're reading from a
@@ -639,7 +626,8 @@ def timestamptz_recv_integer(data, offset, length):
 
 
 def timestamptz_recv_float(data, offset, length):
-    return timestamp_recv_float(data, offset, length).replace(tzinfo=utc)
+    return timestamp_recv_float(data, offset, length).replace(
+        tzinfo=Timezone.utc)
 
 
 def interval_send_integer(v):
@@ -744,7 +732,7 @@ def int_in(data, offset, length):
     return int(data[offset: offset + length])
 
 
-class Cursor(object):
+class Cursor():
     """A cursor object is returned by the :meth:`~Connection.cursor` method of
     a connection. It has the following attributes and methods:
 
@@ -1101,7 +1089,7 @@ IDLE_IN_FAILED_TRANSACTION = b"E"
 arr_trans = dict(zip(map(ord, "[] 'u"), list('{}') + [None] * 3))
 
 
-class Connection(object):
+class Connection():
 
     # DBAPI Extension: supply exceptions as attributes on the connection
     Warning = property(lambda self: self._getError(Warning))
