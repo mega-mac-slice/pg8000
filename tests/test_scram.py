@@ -1,7 +1,5 @@
 from pg8000 import pg_scram
-import pg8000
 from os import environ
-from pytest import raises
 
 db_connect = {
     'user': 'postgres',

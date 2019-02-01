@@ -32,7 +32,6 @@ setup(
     url="https://github.com/tlocke/pg8000",
     license="BSD",
     install_requires=[
-        "six>=1.10.0",
         "passlib==1.7.1"
     ],
     classifiers=[
@@ -40,8 +39,6 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
